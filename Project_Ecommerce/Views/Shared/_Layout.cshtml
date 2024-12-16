@@ -1,0 +1,144 @@
+﻿@using Project_Ecommerce.Utility
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpContextAccessor
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Project_Ecommerce</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Project_Ecommerce.styles.css" asp-append-version="true" />
+
+    @*CSS REF*@
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css" />
+
+
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-primary border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <b><a class="nav-link text-white " asp-area="" asp-controller="Home" asp-action="Index">Home</a></b>
+                        </li>
+                        <li class="nav-item">
+                            <b><a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a></b>
+                        </li>
+                        @if(User.IsInRole(SD.Role_Admin))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link text-white dropdown-toggle" data-bs-toggle="dropdown"
+                               href="#" role="button" aria-haspopup="true"
+                               aria-expanded="false"><b>Dropdown</b></a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Category" asp-action="Index">Category</a>
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="CoverType" asp-action="Index">Cover Type</a>
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Product" asp-action="Index">Product List</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#">Separated link</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link text-white dropdown-toggle" data-bs-toggle="dropdown"
+                                   href="#" role="button" aria-haspopup="true"
+                                   aria-expanded="false"><b>Order Management</b></a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Order" asp-action="Index">All Orders</a>
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Order" asp-action="PendingOrders">Pending Orders</a>
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Order" asp-action="ApprovedOrders">Approved Orders</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#">Separated link</a>
+                                </div>
+                            </li>
+                        }
+                        @if(User.IsInRole(SD.Role_Admin) ||User.IsInRole(SD.Role_Employee))
+                        {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link text-white dropdown-toggle" data-bs-toggle="dropdown"
+                               href="#" role="button" aria-haspopup="true"
+                               aria-expanded="false"><b>Company/User</b></a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" asp-area="Admin" asp-controller="Company" asp-action="Index">Company</a>
+                                <a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="Index">User</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Separated link</a>
+                            </div>
+                        </li>
+                            
+                        }
+                    
+
+                                @*Cart *@
+
+                        @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee) || User.IsInRole(SD.Role_Company) || User.IsInRole(SD.Role_Individual))
+                        {
+                            @if (httpContextAccessor.HttpContext.Session.GetInt32(SD.Ss_CartSessionCount) != null && httpContextAccessor.HttpContext.Session.GetInt32(SD.Ss_CartSessionCount) != 0)
+                            {
+                                var Count = httpContextAccessor.HttpContext.Session.GetInt32(SD.Ss_CartSessionCount);
+                                <li>
+                                    <a class="nav-item nav-link text-white" asp-area="Customer" asp-controller="Cart" asp-action="Index">
+                                        <i class="fas fa-shopping-cart">
+                                            <span class="badge  position-absolute top rounded-circle start-10 bg-danger ">
+                                                @Count
+                                            </span>
+                                        </i>
+                                    </a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li>
+                                    <a class="nav-item nav-link text-white position-relative">
+                                        <i class="fas fa-shopping-cart">
+                                            <span class="badge bg-danger position-absolute top-0 start-100 rounded-circle">
+                                                0
+                                            </span>
+                                        </i>
+                                    </a>
+                                </li>
+
+                            }
+
+                        }
+
+                      
+                    </ul>
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container text-primary">
+            &copy;
+            @DateTime.Now.Year all rights reserved for Ecommerce
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @*JS REF*@
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://kit.fontawesome.com/e19c476714.js" crossorigin="anonymous"></script>
+
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,176 @@
+﻿@model Project_Ecommerce.Models.ViewModels.ShoppingCartVM
+
+<div class="row">
+    <div class="col-9">
+        <h2 class="text-primary"> Orders</h2>
+    </div>
+</div>
+<div class="container rounded border m-2 p-2 ">
+    <table id="tbldata" class="table table-active table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Order Date</th>
+                <th>Name</th>
+                <th>Street Address</th>
+                <th>State</th>
+                <th>City</th>
+                <th>Order Total</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+    </table>
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+
+                <br />
+                <div class="backgroundWhiteBorder">
+                    <div class="container">
+                        <div class="card">
+                            <div class="card-header bg-dark text-light ml-0 row container">
+                                <div class="col-6">
+                                    <i class="fa fa-shopping-cart"></i> &nbsp;
+                                    Order Summary
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="container rounded p-2">
+                                    <div class="row">
+                                        <div class="col-12 col-lg-6 pb-4">
+                                            <div class="row">
+                                                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                                    <span class="text-info">Delivery Details:</span>
+                                                </h4>
+                                            </div>
+                                            <div class="row my-1">
+                                                <div class="col-3">
+                                                    <label>Name</label>
+                                                </div>
+                                                <div class="col-9">
+                                                    <input type="text" asp-for="@Model.OrderHeader.Name"  class="form-control" />
+                                                </div>
+                                            </div>
+                                            <div class="row my-1">
+                                                <div class="col-3">
+                                                    <label>Phone</label>
+                                                </div>
+                                                <div class="col-9">
+                                                    <input type="text" class="form-control" />
+                                                </div>
+                                            </div>
+                                            <div class="row my-1">
+                                                <div class="col-3">
+                                                    <label>Street Address</label>
+                                                </div>
+                                                <div class="col-9">
+                                                    <input type="text" class="form-control" />
+                                                </div>
+                                            </div>
+                                            <div class="row my-1">
+                                                <div class="col-3">
+                                                    <label>City</label>
+                                                </div>
+                                                <div class="col-9">
+                                                    <input type="text" class="form-control" />
+                                                </div>
+                                            </div>
+                                            <div class="row my-1">
+                                                <div class="col-3">
+                                                    <label>State</label>
+                                                </div>
+                                                <div class="col-9">
+                                                    <input type="text" class="form-control" />
+                                                </div>
+                                            </div>
+                                            <div class="row my-1">
+                                                <div class="col-3">
+                                                    <label>Postal Code</label>
+                                                </div>
+                                                <div class="col-9">
+                                                    <input type="text" class="form-control" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-lg-5 offset-lg-1">
+                                            <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                                <span class="text-info">Order Summary:</span>
+                                            </h4>
+                                            <ul class="list-group mb-3">
+                                                <li class="list-group-item d-flex justify-content-between">
+                                                    <div>
+                                                        <h6 class="my-0">--TITLE--</h6>
+                                                        <small class="text-muted">Quantity: --COUNT--</small>
+                                                    </div>
+                                                    <span class="text-muted">$ --PRICE* COUNT--</span>
+                                                </li>
+                                                <li class="list-group-item d-flex justify-content-between bg-light">
+                                                    <small class="text-info">Total (USD)</small>
+                                                    <strong class="text-info">$--GRAND TOTAL--</strong>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <div class="row">
+                                    <div class="col-12 col-md-8 pt-2">
+                                        <p style="color:maroon; font-size:14px;">Estimate delivery Date: @DateTime.Now.AddDays(7).ToShortDateString() - @DateTime.Now.AddDays(14).ToShortDateString()</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script src="~/js/ApprovedOrders.js"></script>
+    <style>
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+            .close:hover,
+            .close:focus {
+                color: black;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+    </style>
+
+    <script>
+
+        function closeModal() {
+            document.getElementById("myModal").style.display = "none";
+        }
+    </script>
+}
